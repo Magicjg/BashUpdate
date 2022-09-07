@@ -24,11 +24,87 @@ check_exist_status()
             read -p "The last command exited with an error. exit script? (Y/N) " answer
 
         #CONDITIONAL FOR QUIT OUT OF PROGRAM IF A COMAND FAIL
-        if [ "$answer" == "Y" || "y"];
-        then
-            exit 1
-        fi
+        case $answer in
+            y)
+                exit 1
+            ;;
+            Y)
+                exit 1
+            ;;
+            n)
+                echo Okay
+            ;;
+             n)
+                echo Okay
+            ;;
+        esac
     fi
+}
+
+upadate()
+{
+    
+
+    case $OPTION in 
+        Y)
+            sudo apt update
+            check_exist_status
+            sudo apt upgrade 
+            check_exist_status
+            sudo apt autoclean
+            check_exist_status
+            sudo apt -s autoremove
+            check_exist_status
+            apt list --upgradable  
+            check_exist_status
+
+            echo ---------------------------
+            echo --SYSTEM UPGRADE COMPLETE--
+            echo ---------------------------
+        ;;
+        y)
+            sudo apt update
+            check_exist_status
+            sudo apt upgrade 
+            check_exist_status
+            sudo apt autoclean
+            check_exist_status
+            sudo apt -s autoremove
+            check_exist_status
+            apt list --upgradable  
+            check_exist_status
+
+            echo ---------------------------
+            echo --SYSTEM UPGRADE COMPLETE--
+            echo ---------------------------
+        ;;
+
+        #CONDITIONAL IF ANSWER IN NO
+
+        n)
+            bye
+        ;;
+        N)
+            bye
+        ;;
+
+        #DEFAULT ANSWER
+
+        *)
+            
+        ;;
+    esac
+
+}
+
+bye()
+{
+
+    echo ----------------------------------
+    echo ------------Bye-------------------
+    echo ----------------------------------
+    exit 1
+
 }
 
 #ASKING TO SEE AVAIBLE UPDATES
@@ -39,6 +115,7 @@ read LISTA
 case $LISTA in 
     #IF TE ANSWER IS YES
     Y)
+        
         echo ----------------------------------
         echo "These are your available updates"
         echo ----------------------------------
@@ -55,147 +132,32 @@ case $LISTA in
 
         #CONDITIONAL IF ANSWER IS YES
 
-        case $OPTION in 
-            Y)
-                sudo apt update
-                check_exist_status
-                sudo apt upgrade 
-                check_exist_status
-                sudo apt autoclean
-                check_exist_status
-                sudo apt -s autoremove
-                check_exist_status
-                apt list --upgradable  
-                check_exist_status
-
-                echo ---------------------------
-                echo --SYSTEM UPGRADE COMPLETE--
-                echo ---------------------------
-            ;;
-            y)
-                sudo apt update
-                check_exist_status
-                sudo apt upgrade 
-                check_exist_status
-                sudo apt autoclean
-                check_exist_status
-                sudo apt -s autoremove
-                check_exist_status
-                apt list --upgradable  
-                check_exist_status
-
-                echo ---------------------------
-                echo --SYSTEM UPGRADE COMPLETE--
-                echo ---------------------------
-            ;;
-
-            #CONDITIONAL IF ANSWER IN NO
-
-            n)
-                echo ----------------------------------
-                echo ------------Bye-------------------
-                echo ----------------------------------
-                exit 1
-            ;;
-            N)
-                echo ----------------------------------
-                echo ------------Bye-------------------
-                echo ----------------------------------
-                exit 1
-            ;;
-
-            #DEFAULT ANSWER
-
-             *)
-                echo ----------------------------------
-                echo ------------Bye-------------------
-                echo ----------------------------------
-                exit 1
-            ;;
+        upadate
     
-        esac
     ;;
 
     #CONDITIONAL FOR ANSWER YES
 
     y)
-        #ASK TO SEE UPDATES AVAILABLE
         
         echo ----------------------------------
         echo "These are your available updates"
         echo ----------------------------------
 
-        apt list --upgradable   
+        apt list --upgradable 
         check_exist_status
-        
-        #ASK TO DO THE UPDATES
+
+        #ASK TO APPLY UPDATES
 
         echo ------------------------------------------
         echo " Do you want to apply these updates? Y/N"
         read OPTION
         echo ------------------------------------------
+
+    #CONDITIONAL IF ANSWER IS YES
+
+        upadate
         
-        #CONDITIONAL FOR ANSWERS
-
-        case $OPTION in 
-
-            #IF ANSWER IS YES
-            Y)
-                sudo apt update
-                check_exist_status
-                sudo apt upgrade 
-                check_exist_status
-                sudo apt autoclean
-                check_exist_status
-                sudo apt -s autoremove
-                check_exist_status
-                apt list --upgradable  
-                check_exist_status
-
-                echo ---------------------------
-                echo --SYSTEM UPGRADE COMPLETE--
-                echo ---------------------------
-            ;;
-            y)
-                sudo apt update
-                check_exist_status
-                sudo apt upgrade 
-                check_exist_status
-                sudo apt autoclean
-                check_exist_status
-                sudo apt -s autoremove
-                check_exist_status
-                apt list --upgradable  
-                check_exist_status
-
-                echo ---------------------------
-                echo --SYSTEM UPGRADE COMPLETE--
-                echo ---------------------------
-            ;;
-
-            #IF ANSWER IS NO
-            n)
-                echo ----------------------------------
-                echo ------------Bye-------------------
-                echo ----------------------------------
-                exit 1
-            ;;
-            N)
-                echo ----------------------------------
-                echo ------------Bye-------------------
-                echo ----------------------------------
-                exit 1
-            ;;
-
-            #DEFAULT OPTION
-             *)
-                echo ----------------------------------
-                echo ------------Bye-------------------
-                echo ----------------------------------
-                exit 1
-            ;;
-    
-        esac
     ;;
 
  #IF ANSWER IS NO TO SE UPDATES
@@ -207,64 +169,7 @@ case $LISTA in
         read OPTION
         echo ------------------------------------------
 
-        case $OPTION in 
-            #IF ANSWER IS YES
-            Y)
-                sudo apt update
-                check_exist_status
-                sudo apt upgrade 
-                check_exist_status
-                sudo apt autoclean
-                check_exist_status
-                sudo apt -s autoremove
-                check_exist_status
-                apt list --upgradable  
-                check_exist_status
-
-                echo ---------------------------
-                echo --SYSTEM UPGRADE COMPLETE--
-                echo ---------------------------
-            ;;
-            y)
-                sudo apt update
-                check_exist_status
-                sudo apt upgrade 
-                check_exist_status
-                sudo apt autoclean
-                check_exist_status
-                sudo apt -s autoremove
-                check_exist_status
-                apt list --upgradable  
-                check_exist_status
-
-                echo ---------------------------
-                echo --SYSTEM UPGRADE COMPLETE--
-                echo ---------------------------
-            ;;
-
-            #IF ANSWER IS NO
-            n)
-                echo ----------------------------------
-                echo ------------Bye-------------------
-                echo ----------------------------------
-                exit 1
-            ;;
-            N)
-                echo ----------------------------------
-                echo ------------Bye-------------------
-                echo ----------------------------------
-                exit 1
-            ;;
-
-            #DEFAULT OPTION
-             *)
-                echo ----------------------------------
-                echo ------------Bye-------------------
-                echo ----------------------------------
-                exit 1
-            ;;
-    
-        esac
+        upadate
     ;;
     N)
         #ASK TO UPDATE ANYWAY
@@ -273,64 +178,10 @@ case $LISTA in
         read OPTION
         echo ------------------------------------------
 
-        case $OPTION in 
-            #IF ANSWER IS YES
-            Y)
-                sudo apt update
-                check_exist_status
-                sudo apt upgrade 
-                check_exist_status
-                sudo apt autoclean
-                check_exist_status
-                sudo apt -s autoremove
-                check_exist_status
-                apt list --upgradable  
-                check_exist_status
-
-                echo ---------------------------
-                echo --SYSTEM UPGRADE COMPLETE--
-                echo ---------------------------
-            ;;
-            y)
-                sudo apt update
-                check_exist_status
-                sudo apt upgrade 
-                check_exist_status
-                sudo apt autoclean
-                check_exist_status
-                sudo apt -s autoremove
-                check_exist_status
-                apt list --upgradable  
-                check_exist_status
-
-                echo ---------------------------
-                echo --SYSTEM UPGRADE COMPLETE--
-                echo ---------------------------
-            ;;
-
-            #IF ANSWER IS NO
-            n)
-                echo ----------------------------------
-                echo ------------Bye-------------------
-                echo ----------------------------------
-                exit 1
-            ;;
-            N)
-                echo ----------------------------------
-                echo ------------Bye-------------------
-                echo ----------------------------------
-                exit 1
-            ;;
-
-            #DEFAULT OPTION
-             *)
-                echo ----------------------------------
-                echo ------------Bye-------------------
-                echo ----------------------------------
-                exit 1
-            ;;
+        upadate
+        
+    #DEFAULT OPTION
     
-        esac
     
 esac
 
