@@ -7,9 +7,19 @@ echo --------------------
 echo ---SYSTEM-UPDATE----
 echo --------------------
 
-#CHECK STATUS FOR FAILS IN EXECUTION OF COMANDS 
+
+bye()
+{
+
+    echo ----------------------------------
+    echo ------------Bye-------------------
+    echo ----------------------------------
+    exit 1
+
+}
 check_exist_status()
 {
+    #CHECK STATUS FOR FAILS IN EXECUTION OF COMANDS 
     #CONDITIONAL IF TO READ DE EXIT OF COMANDS
     if [ $? = '0' ];
     then
@@ -24,164 +34,78 @@ check_exist_status()
             read -p "The last command exited with an error. exit script? (Y/N) " answer
 
         #CONDITIONAL FOR QUIT OUT OF PROGRAM IF A COMAND FAIL
-        case $answer in
-            y)
-                exit 1
-            ;;
-            Y)
-                exit 1
-            ;;
-            n)
-                echo Okay
-            ;;
-             n)
-                echo Okay
-            ;;
-        esac
+        if [[ $answer == [yY] ]];
+        then
+            bye
+            exit 1 
+        elif [[ $answer == [nN] ]];
+        then
+            echo Okay
+        fi
     fi
 }
 
 upadate()
-{
+{ 
+    if [[ $OPTION == [yY] ]];
+        then
+        
+            sudo apt update
+            check_exist_status
+            sudo apt upgrade 
+            check_exist_status
+            sudo apt autoclean
+            check_exist_status
+            sudo apt -s autoremove
+            check_exist_status
+            apt list --upgradable  
+            check_exist_status
+
+            echo ---------------------------
+            echo --SYSTEM UPGRADE COMPLETE--
+            echo ---------------------------
     
-
-    case $OPTION in 
-        Y)
-            sudo apt update
-            check_exist_status
-            sudo apt upgrade 
-            check_exist_status
-            sudo apt autoclean
-            check_exist_status
-            sudo apt -s autoremove
-            check_exist_status
-            apt list --upgradable  
-            check_exist_status
-
-            echo ---------------------------
-            echo --SYSTEM UPGRADE COMPLETE--
-            echo ---------------------------
-        ;;
-        y)
-            sudo apt update
-            check_exist_status
-            sudo apt upgrade 
-            check_exist_status
-            sudo apt autoclean
-            check_exist_status
-            sudo apt -s autoremove
-            check_exist_status
-            apt list --upgradable  
-            check_exist_status
-
-            echo ---------------------------
-            echo --SYSTEM UPGRADE COMPLETE--
-            echo ---------------------------
-        ;;
-
         #CONDITIONAL IF ANSWER IN NO
-
-        n)
+    elif [[ $OPTION == [nN] ]];
+        then        
             bye
-        ;;
-        N)
+    else #DEFAULT ANSWER
             bye
-        ;;
-
-        #DEFAULT ANSWER
-
-        *)
-            
-        ;;
-    esac
-
-}
-
-bye()
-{
-
-    echo ----------------------------------
-    echo ------------Bye-------------------
-    echo ----------------------------------
-    exit 1
-
+    fi
 }
 
 #ASKING TO SEE AVAIBLE UPDATES
 echo "Do you want to see if there are updates available?  Y/N" 
 read LISTA
-
-#MAKING A CONDITIONAL TO SEE UPDATES
-case $LISTA in 
-    #IF TE ANSWER IS YES
-    Y)
-        
+if [[ $LISTA == [yY] ]]; then   
         echo ----------------------------------
         echo "These are your available updates"
         echo ----------------------------------
-
         apt list --upgradable 
         check_exist_status
-
         #ASK TO APPLY UPDATES
-
         echo ------------------------------------------
-        echo " Do you want to apply these updates? Y/N"
+        echo "Do you want to apply these updates? Y/N"
         read OPTION
         echo ------------------------------------------
-
         #CONDITIONAL IF ANSWER IS YES
-
         upadate
-    
-    ;;
-
-    #CONDITIONAL FOR ANSWER YES
-
-    y)
-        
-        echo ----------------------------------
-        echo "These are your available updates"
-        echo ----------------------------------
-
-        apt list --upgradable 
-        check_exist_status
-
-        #ASK TO APPLY UPDATES
-
-        echo ------------------------------------------
-        echo " Do you want to apply these updates? Y/N"
-        read OPTION
-        echo ------------------------------------------
-
-    #CONDITIONAL IF ANSWER IS YES
-
-        upadate
-        
-    ;;
-
- #IF ANSWER IS NO TO SE UPDATES
-
-    n)
+elif [[ $LISTA == [nN] ]]; then
         #ASK TO UPDATE ANYWAY
         echo ------------------------------------------
-        echo " WANT TO UPGRADE ANYWAY? Y/N"
+        echo "WANT TO UPGRADE ANYWAY? Y/N"
         read OPTION
         echo ------------------------------------------
-
-        upadate
-    ;;
-    N)
-        #ASK TO UPDATE ANYWAY
-        echo ------------------------------------------
-        echo " WANT TO UPGRADE ANYWAY? Y/N"
-        read OPTION
-        echo ------------------------------------------
-
-        upadate
+        if [[ $OPTION == [yY] ]]; then
+            upadate
+        elif [[ $OPTION == [nN] ]]; then
+            bye
+        else
+            bye
+        fi
         
-    #DEFAULT OPTION
-    
-    
-esac
+    else
+        bye
+fi
+
 
